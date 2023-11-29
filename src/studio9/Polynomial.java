@@ -11,6 +11,7 @@ public class Polynomial {
 	 */
 	public Polynomial() {
 		//FIXME
+		list = new LinkedList<Double>();
 	}
 
 	
@@ -20,7 +21,7 @@ public class Polynomial {
 	 * @return polynomial with added term
 	 */
 	public void addTerm(double coeff) {
-		//FIXME
+		list.add(coeff);
 	}
 	
 	/*
@@ -29,7 +30,13 @@ public class Polynomial {
 	 * Cx^N + Cx^N-1 + ... + Cx + C
 	 */
 	public String toString() {
-		return ""; //FIXME
+		int size = list.size();
+		String result = "";
+		for (int i = 0; i < size-1; i++) {
+			result = result + list.get(i) + "x^" + (size-1-i) + " + ";
+		}
+		result = result + list.get(size-1);
+		return result;
 	}
 	
 	/**
@@ -38,15 +45,21 @@ public class Polynomial {
 	 * @return value of polynomial at that x
 	 */
 	public double evaluate(double x) {
-		return 0;//FIXME
+		int size = list.size();
+		double result = 0;
+		for (int i = 0; i < size; i++) {
+			result = result + list.get(i)*(Math.pow(x, size-1-i));
+		}
+		return result;
 	}
-
-	
 	public Polynomial derivative() {
-		return null;//FIXME
+		Polynomial p1 = new Polynomial();
+		int size = this.list.size();
+		for (int i = 0; i < this.list.size()-1; i++) {
+		 p1.addTerm(this.list.get(i)*(size-1-i));
+		}
+		return p1;
 	}
-	
-
 	/**
 	 * This is the "equals" method that is called by
 	 *    assertEquals(...) from your JUnit test code.
@@ -57,7 +70,6 @@ public class Polynomial {
 	 *    of equality testing.  I have annotated the code to show
 	 *    what is going on.
 	 */
-
 	public boolean equals(Object obj) {
 		// If the two objects are exactly the same object,
 		//    we are required to return true.  The == operator
@@ -70,12 +82,10 @@ public class Polynomial {
 		//    objects are not the same if obj is null.
 		if (obj == null)
 			return false;
-
 		//  The two objects must be Polynomials (or better) to
 		//     allow meaningful comparison.
 		if (!(obj instanceof Polynomial))
 			return false;
-
 		// View the obj reference now as the Polynomial we know
 		//   it to be.  This works even if obj is a BetterPolynomial.
 		Polynomial other = (Polynomial) obj;
